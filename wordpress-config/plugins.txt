@@ -1,0 +1,32 @@
+# Player profiles
+buddypress
+
+# Team management
+sportspress
+
+# Photo galleries
+envira-gallery-lite
+
+# Forms (contact, RSVP)
+contact-form-7
+
+# SEO
+wordpress-seo
+
+# Security
+wordfence
+
+# Performance
+wp-super-cache
+
+# Backups
+updraftplus
+
+# Social sharing
+social-warfare
+
+# Events / fixtures calendar
+the-events-calendar
+
+# Media management
+regenerate-thumbnails

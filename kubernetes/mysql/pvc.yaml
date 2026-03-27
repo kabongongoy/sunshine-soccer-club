@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pvc
+  namespace: soccer
+spec:
+  storageClassName: nfs-readynas
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi

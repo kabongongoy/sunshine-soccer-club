@@ -1,0 +1,64 @@
+name: Deploy to Lightsail
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H ${{ secrets.LIGHTSAIL_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Sync mu-plugins
+        run: |
+          scp -i ~/.ssh/deploy_key \
+            wordpress-config/sunshine-player-accounts.php \
+            wordpress-config/sunshine-player-social.php \
+            wordpress-config/sunshine-shortcodes.php \
+            admin@${{ secrets.LIGHTSAIL_HOST }}:/tmp/
+
+          ssh -i ~/.ssh/deploy_key admin@${{ secrets.LIGHTSAIL_HOST }} "
+            sudo cp /tmp/sunshine-player-accounts.php /var/www/html/wp-content/mu-plugins/
+            sudo cp /tmp/sunshine-player-social.php    /var/www/html/wp-content/mu-plugins/
+            sudo cp /tmp/sunshine-shortcodes.php       /var/www/html/wp-content/mu-plugins/
+            sudo chown www-data:www-data /var/www/html/wp-content/mu-plugins/sunshine-*.php
+          "
+
+      - name: Sync theme customisation
+        run: |
+          scp -i ~/.ssh/deploy_key \
+            wordpress-config/single-sp_player.php \
+            admin@${{ secrets.LIGHTSAIL_HOST }}:/tmp/
+
+          ssh -i ~/.ssh/deploy_key admin@${{ secrets.LIGHTSAIL_HOST }} "
+            sudo cp /tmp/single-sp_player.php /var/www/html/wp-content/themes/sydney/
+            sudo chown www-data:www-data /var/www/html/wp-content/themes/sydney/single-sp_player.php
+          "
+
+      - name: Sync logo
+        run: |
+          scp -i ~/.ssh/deploy_key \
+            SSC-logo.png \
+            admin@${{ secrets.LIGHTSAIL_HOST }}:/tmp/
+
+          ssh -i ~/.ssh/deploy_key admin@${{ secrets.LIGHTSAIL_HOST }} "
+            sudo cp /tmp/SSC-logo.png /var/www/html/wp-content/uploads/SSC-logo.png
+            sudo chown www-data:www-data /var/www/html/wp-content/uploads/SSC-logo.png
+          "
+
+      - name: Flush WordPress cache
+        run: |
+          ssh -i ~/.ssh/deploy_key admin@${{ secrets.LIGHTSAIL_HOST }} "
+            sudo -u www-data wp --path=/var/www/html cache flush 2>/dev/null || true
+          "

@@ -1,0 +1,16 @@
+# SSH keys
+*.pem
+*.key
+
+# Database dumps
+*.sql
+
+# WordPress archives
+*.zip
+
+# Local deploy scripts that contain hardcoded paths/IPs
+upload-logo.py
+
+# OS
+.DS_Store
+Thumbs.db

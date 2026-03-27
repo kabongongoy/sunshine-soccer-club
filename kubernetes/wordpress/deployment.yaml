@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wordpress
+  namespace: soccer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wordpress
+  template:
+    metadata:
+      labels:
+        app: wordpress
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: kube-node-02
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
+      containers:
+        - name: wordpress
+          image: wordpress:latest
+          envFrom:
+            - configMapRef:
+                name: wordpress-config
+          env:
+            - name: WORDPRESS_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: mysql-password
+            - name: WORDPRESS_CONFIG_EXTRA
+              value: "@ini_set('memory_limit', '512M'); define('WP_MEMORY_LIMIT', '512M'); define('WP_MAX_MEMORY_LIMIT', '512M');"
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              memory: "384Mi"
+              cpu: "100m"
+            limits:
+              memory: "1Gi"
+              cpu: "1000m"
+          volumeMounts:
+            - name: wordpress-storage
+              mountPath: /var/www/html/wp-content
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - /bin/bash
+                  - -c
+                  - |
+                    curl -s https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
+                      -o /usr/local/bin/wp && chmod +x /usr/local/bin/wp || true
+                    echo 'memory_limit = 512M' > /usr/local/etc/php/conf.d/99-memory.ini
+      volumes:
+        - name: wordpress-storage
+          persistentVolumeClaim:
+            claimName: wordpress-pvc

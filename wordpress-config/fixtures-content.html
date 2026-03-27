@@ -1,0 +1,77 @@
+<!-- wp:html -->
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+body { font-family: "Inter", sans-serif; }
+.ssc-fu { max-width: 860px; margin: 0 auto; padding: 0 20px 60px; }
+.ssc-page-title { font-family: "Oswald", sans-serif; font-size: 40px; font-weight: 700; color: #1e3a8a; margin: 40px 0 6px; }
+.ssc-page-sub { color: #666; font-size: 16px; margin-bottom: 0; }
+.ssc-head { display: flex; align-items: center; gap: 16px; margin: 48px 0 20px; }
+.ssc-head h2 { font-family: "Oswald", sans-serif; font-size: 24px; font-weight: 700; color: #1e3a8a; margin: 0; white-space: nowrap; }
+.ssc-head .ssc-line { flex: 1; height: 3px; background: linear-gradient(to right, #f5a623, transparent); border-radius: 2px; }
+.ssc-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 22px 26px; margin-bottom: 16px; box-shadow: 0 2px 6px rgba(0,0,0,.04); }
+.ssc-tag { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; padding: 3px 10px; border-radius: 20px; margin-bottom: 10px; }
+.ssc-tag-match { background: #dcfce7; color: #166534; }
+.ssc-tag-upcoming { background: #dbeafe; color: #1e40af; }
+.ssc-tag-news { background: #fef9c3; color: #854d0e; }
+.ssc-card h3 { font-family: "Oswald", sans-serif; font-size: 20px; font-weight: 600; color: #1e293b; margin: 0 0 5px; }
+.ssc-card .ssc-meta { font-size: 13px; color: #888; margin-bottom: 10px; }
+.ssc-card p { font-size: 15px; color: #444; line-height: 1.75; margin: 0; }
+.ssc-placeholder { background: #f8faff; border: 2px dashed #c7d7f5; border-radius: 10px; padding: 18px 22px; color: #666; font-size: 14px; text-align: center; margin-top: 8px; }
+.ssc-links-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(250px,1fr)); gap: 12px; }
+.ssc-link-card { display: flex; align-items: center; gap: 14px; background: #f8faff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 13px 16px; text-decoration: none; color: #1e293b; transition: .2s; }
+.ssc-link-card:hover { background: #1e3a8a; color: #fff; border-color: #1e3a8a; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(30,58,138,.2); }
+.ssc-link-flag { font-size: 26px; flex-shrink: 0; }
+.ssc-link-info strong { display: block; font-size: 13.5px; font-weight: 700; }
+.ssc-link-info span { font-size: 12px; opacity: .6; }
+.ssc-link-card:hover .ssc-link-info span { opacity: .85; }
+</style>
+
+<div class="ssc-fu">
+  <h1 class="ssc-page-title">Fixtures &amp; Updates</h1>
+  <p class="ssc-page-sub">Match reports, upcoming sessions, and everything happening at Sunshine Soccer Club.</p>
+
+  <div class="ssc-head"><h2>Latest Updates</h2><div class="ssc-line"></div></div>
+  <div class="ssc-card">
+    <span class="ssc-tag ssc-tag-news">Welcome</span>
+    <h3>Welcome to Sunshine Soccer Club!</h3>
+    <div class="ssc-meta">March 2026</div>
+    <p>This is where we post updates after each session — reports, highlights, and club news. Check back after every game!</p>
+  </div>
+  <div class="ssc-placeholder">Admin: Copy a card above and paste it here after each session. Change the tag, title, and text to match.</div>
+
+  <div class="ssc-head"><h2>Upcoming Sessions</h2><div class="ssc-line"></div></div>
+  <div class="ssc-card">
+    <span class="ssc-tag ssc-tag-upcoming">Upcoming</span>
+    <h3>Weekly Training Session</h3>
+    <div class="ssc-meta">Every Sunday &bull; 7:00 AM &bull; Venue TBC</div>
+    <p>Our regular weekly session. All members welcome — bring your boots and energy!</p>
+  </div>
+
+  <div class="ssc-head"><h2>League Tables</h2><div class="ssc-line"></div></div>
+  <div class="ssc-links-grid">
+    <a class="ssc-link-card" href="https://www.premierleague.com/tables" target="_blank" rel="noopener"><span class="ssc-link-flag">&#x1F3F4;&#xE0067;&#xE0062;&#xE0065;&#xE006E;&#xE0067;&#xE007F;</span><div class="ssc-link-info"><strong>Premier League</strong><span>England</span></div></a>
+    <a class="ssc-link-card" href="https://www.laliga.com/en-GB/laliga-ea-sports/standings" target="_blank" rel="noopener"><span class="ssc-link-flag">&#x1F1EA;&#x1F1F8;</span><div class="ssc-link-info"><strong>La Liga</strong><span>Spain</span></div></a>
+    <a class="ssc-link-card" href="https://www.bundesliga.com/en/bundesliga/table" target="_blank" rel="noopener"><span class="ssc-link-flag">&#x1F1E9;&#x1F1EA;</span><div class="ssc-link-info"><strong>Bundesliga</strong><span>Germany</span></div></a>
+    <a class="ssc-link-card" href="https://www.legaseriea.it/en/serie-a/classifica" target="_blank" rel="noopener"><span class="ssc-link-flag">&#x1F1EE;&#x1F1F9;</span><div class="ssc-link-info"><strong>Serie A</strong><span>Italy</span></div></a>
+    <a class="ssc-link-card" href="https://www.ligue1.com/Ligue1/Classement/2024-2025" target="_blank" rel="noopener"><span class="ssc-link-flag">&#x1F1EB;&#x1F1F7;</span><div class="ssc-link-info"><strong>Ligue 1</strong><span>France</span></div></a>
+    <a class="ssc-link-card" href="https://www.eredivisie.nl/en/standings" target="_blank" rel="noopener"><span class="ssc-link-flag">&#x1F1F3;&#x1F1F1;</span><div class="ssc-link-info"><strong>Eredivisie</strong><span>Netherlands</span></div></a>
+    <a class="ssc-link-card" href="https://www.ligaportugal.pt/en/liga/classificacao/20242025/516" target="_blank" rel="noopener"><span class="ssc-link-flag">&#x1F1F5;&#x1F1F9;</span><div class="ssc-link-info"><strong>Primeira Liga</strong><span>Portugal</span></div></a>
+    <a class="ssc-link-card" href="https://www.spfl.co.uk/league/premiership/table" target="_blank" rel="noopener"><span class="ssc-link-flag">&#x1F3F4;</span><div class="ssc-link-info"><strong>Scottish Premiership</strong><span>Scotland</span></div></a>
+    <a class="ssc-link-card" href="https://www.uefa.com/uefachampionsleague/standings/" target="_blank" rel="noopener"><span class="ssc-link-flag">&#x1F3C6;</span><div class="ssc-link-info"><strong>Champions League</strong><span>UEFA</span></div></a>
+    <a class="ssc-link-card" href="https://www.uefa.com/uefaeuropaleague/standings/" target="_blank" rel="noopener"><span class="ssc-link-flag">&#x1F948;</span><div class="ssc-link-info"><strong>Europa League</strong><span>UEFA</span></div></a>
+  </div>
+
+  <div class="ssc-head"><h2>Best Football Sites</h2><div class="ssc-line"></div></div>
+  <div class="ssc-links-grid">
+    <a class="ssc-link-card" href="https://www.bbc.com/sport/football" target="_blank" rel="noopener"><span class="ssc-link-flag">&#x1F4FA;</span><div class="ssc-link-info"><strong>BBC Sport</strong><span>News &amp; results</span></div></a>
+    <a class="ssc-link-card" href="https://www.skysports.com/football" target="_blank" rel="noopener"><span class="ssc-link-flag">&#x1F6F0;&#xFE0F;</span><div class="ssc-link-info"><strong>Sky Sports</strong><span>Fixtures &amp; live scores</span></div></a>
+    <a class="ssc-link-card" href="https://www.espn.com/soccer/" target="_blank" rel="noopener"><span class="ssc-link-flag">&#x1F3A4;</span><div class="ssc-link-info"><strong>ESPN Soccer</strong><span>Global coverage</span></div></a>
+    <a class="ssc-link-card" href="https://www.goal.com" target="_blank" rel="noopener"><span class="ssc-link-flag">&#x26BD;</span><div class="ssc-link-info"><strong>Goal.com</strong><span>News &amp; transfers</span></div></a>
+    <a class="ssc-link-card" href="https://www.whoscored.com" target="_blank" rel="noopener"><span class="ssc-link-flag">&#x1F4CA;</span><div class="ssc-link-info"><strong>WhoScored</strong><span>Match statistics</span></div></a>
+    <a class="ssc-link-card" href="https://www.transfermarkt.com" target="_blank" rel="noopener"><span class="ssc-link-flag">&#x1F4B0;</span><div class="ssc-link-info"><strong>Transfermarkt</strong><span>Player values</span></div></a>
+    <a class="ssc-link-card" href="https://fbref.com" target="_blank" rel="noopener"><span class="ssc-link-flag">&#x1F52C;</span><div class="ssc-link-info"><strong>FBref</strong><span>Advanced stats</span></div></a>
+    <a class="ssc-link-card" href="https://www.sofascore.com" target="_blank" rel="noopener"><span class="ssc-link-flag">&#x1F4F1;</span><div class="ssc-link-info"><strong>Sofascore</strong><span>Live scores &amp; ratings</span></div></a>
+    <a class="ssc-link-card" href="https://www.flashscore.com" target="_blank" rel="noopener"><span class="ssc-link-flag">&#x26A1;</span><div class="ssc-link-info"><strong>FlashScore</strong><span>All competitions</span></div></a>
+  </div>
+</div>
+<!-- /wp:html -->
