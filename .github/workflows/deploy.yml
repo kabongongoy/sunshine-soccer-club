@@ -63,10 +63,12 @@ jobs:
         run: |
           scp -i ~/.ssh/deploy_key \
             wordpress-config/upsert-pages.php \
+            wordpress-config/coc-content.html \
+            wordpress-config/edit-profile-content.html \
             admin@${{ secrets.LIGHTSAIL_HOST }}:/tmp/
 
           ssh -i ~/.ssh/deploy_key admin@${{ secrets.LIGHTSAIL_HOST }} "
-            sudo -u www-data wp --path=/var/www/html eval-file /tmp/upsert-pages.php
+            sudo -u www-data wp --path=/var/www/html --skip-plugins=wordpress-seo eval-file /tmp/upsert-pages.php
           "
 
       - name: Flush WordPress cache
