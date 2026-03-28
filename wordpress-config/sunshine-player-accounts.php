@@ -89,85 +89,26 @@ add_filter( 'login_redirect', function ( $redirect_to, $request, $user ) {
         : home_url( '/' );
 }, 10, 3 );
 
-// ── 4. Restrict admin pages for players ──────────────────────
-add_action( 'admin_menu', function () {
+// ── 4. Hide admin bar and block wp-admin for players ─────────
+
+// Hide the WordPress admin bar entirely — players only use the front-end form
+add_filter( 'show_admin_bar', function ( $show ) {
+    if ( is_user_logged_in() && ssc_is_player() ) return false;
+    return $show;
+} );
+
+// Redirect any wp-admin visit straight to the front-end edit page
+add_action( 'current_screen', function () {
     if ( ssc_is_admin() || ! ssc_is_player() ) return;
 
-    foreach ( [
-        'index.php', 'edit.php', 'upload.php', 'edit-comments.php',
-        'themes.php', 'plugins.php', 'users.php', 'tools.php',
-        'options-general.php', 'sportspress', 'buddypress',
-        'edit.php?post_type=sp_player', 'edit.php?post_type=sp_event',
-        'edit.php?post_type=sp_team',
-    ] as $page ) {
-        remove_menu_page( $page );
-    }
-}, 999 );
+    $dest = ( function_exists( 'ssc_profile_edit_url' ) ? ssc_profile_edit_url() : null )
+            ?? home_url( '/' );
 
-add_action( 'current_screen', function () {
-    // Never touch admins — bail immediately
-    if ( ssc_is_admin() ) return;
-    if ( ! ssc_is_player() ) return;
-
-    $post_id = ssc_player_post();
-    if ( ! $post_id ) {
-        // Player has no linked post — send to front-end
-        wp_redirect( home_url( '/' ) );
-        exit;
-    }
-
-    $screen = get_current_screen();
-
-    // Allow their own post edit page and media uploader
-    if ( in_array( $screen->base, [ 'post', 'media' ] ) ) {
-        if ( $screen->base === 'post' ) {
-            $editing = (int) ( $_GET['post'] ?? 0 );
-            if ( $editing && $editing !== $post_id ) {
-                wp_redirect( admin_url( 'post.php?post=' . $post_id . '&action=edit' ) );
-                exit;
-            }
-        }
-        return;
-    }
-
-    // All other admin screens → their own edit page
-    wp_redirect( admin_url( 'post.php?post=' . $post_id . '&action=edit' ) );
+    wp_redirect( $dest );
     exit;
 } );
 
-// ── 5. Clean up edit screen for players ──────────────────────
-add_action( 'add_meta_boxes', function () {
-    if ( ssc_is_admin() || ! ssc_is_player() ) return;
-
-    foreach ( [
-        'sp_playerdetails', 'sp_playerevents', 'sp_playerstatistics',
-        'sp_leagues', 'sp_seasons', 'sp_positions', 'sp_nationality',
-        'submitdiv', 'authordiv', 'slugdiv', 'pageparentdiv',
-        'postcustom', 'commentstatusdiv', 'commentsdiv',
-        'revisionsdiv', 'trackbacksdiv', 'postexcerpt',
-        'ssc_linked_user',
-    ] as $id ) {
-        remove_meta_box( $id, 'sp_player', 'normal' );
-        remove_meta_box( $id, 'sp_player', 'side' );
-        remove_meta_box( $id, 'sp_player', 'advanced' );
-    }
-
-    add_meta_box(
-        'ssc_player_save', 'Save Profile',
-        function () {
-            echo '<button type="submit" name="save" value="Save Profile"
-                class="button button-primary button-large"
-                style="width:100%;padding:10px;font-size:15px">Save My Profile</button>';
-            echo '<p style="color:#888;font-size:12px;margin-top:8px">Update your bio and profile photo.</p>';
-        },
-        'sp_player', 'side', 'high'
-    );
-
-    add_meta_box( 'postimagediv', 'My Profile Photo',
-        'post_thumbnail_meta_box', 'sp_player', 'side', 'high' );
-}, 5 );
-
-// ── 6. "Edit My Profile" button on public player page ────────
+// ── 5. "Edit My Profile" button on public player page ────────
 add_filter( 'the_content', function ( $content ) {
     if ( ! is_singular( 'sp_player' ) || ! is_user_logged_in() ) return $content;
     if ( ssc_is_admin() ) return $content;
@@ -195,27 +136,6 @@ add_filter( 'the_content', function ( $content ) {
 
     return $button . $content;
 }, 5 );
-
-add_action( 'admin_bar_menu', function ( $bar ) {
-    if ( ! is_user_logged_in() || ssc_is_admin() ) return;
-    $post_id = ssc_player_post();
-    if ( ! $post_id ) return;
-
-    // Prefer the front-end edit page; fall back to wp-admin
-    $url = null;
-    if ( function_exists( 'ssc_profile_edit_url' ) ) {
-        $url = ssc_profile_edit_url();
-    }
-    if ( ! $url ) {
-        $url = admin_url( 'post.php?post=' . $post_id . '&action=edit' );
-    }
-
-    $bar->add_node( [
-        'id'    => 'ssc_edit_profile',
-        'title' => '✏ Edit My Profile',
-        'href'  => $url,
-    ] );
-}, 100 );
 
 // ── 7. Admin meta box: link a user to a player post ──────────
 add_action( 'add_meta_boxes', function () {
