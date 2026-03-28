@@ -77,6 +77,12 @@ add_filter( 'login_redirect', function ( $redirect_to, $request, $user ) {
     if ( ssc_is_admin( $user ) )     return $redirect_to;
     if ( ! ssc_is_player( $user ) )  return $redirect_to;
 
+    // Prefer the front-end edit page if it exists
+    if ( function_exists( 'ssc_profile_edit_url' ) ) {
+        $front_url = ssc_profile_edit_url();
+        if ( $front_url ) return $front_url;
+    }
+
     $post_id = ssc_player_post( $user );
     return $post_id
         ? admin_url( 'post.php?post=' . $post_id . '&action=edit' )
@@ -170,7 +176,15 @@ add_filter( 'the_content', function ( $content ) {
     $linked  = ssc_player_post();
     if ( $linked !== $post_id ) return $content;
 
-    $url    = admin_url( 'post.php?post=' . $post_id . '&action=edit' );
+    // Prefer the front-end edit page; fall back to wp-admin
+    $url = null;
+    if ( function_exists( 'ssc_profile_edit_url' ) ) {
+        $url = ssc_profile_edit_url();
+    }
+    if ( ! $url ) {
+        $url = admin_url( 'post.php?post=' . $post_id . '&action=edit' );
+    }
+
     $button = '<div style="margin-bottom:20px">
         <a href="' . esc_url( $url ) . '"
            style="display:inline-flex;align-items:center;gap:8px;background:#1e3a8a;
@@ -187,10 +201,19 @@ add_action( 'admin_bar_menu', function ( $bar ) {
     $post_id = ssc_player_post();
     if ( ! $post_id ) return;
 
+    // Prefer the front-end edit page; fall back to wp-admin
+    $url = null;
+    if ( function_exists( 'ssc_profile_edit_url' ) ) {
+        $url = ssc_profile_edit_url();
+    }
+    if ( ! $url ) {
+        $url = admin_url( 'post.php?post=' . $post_id . '&action=edit' );
+    }
+
     $bar->add_node( [
         'id'    => 'ssc_edit_profile',
         'title' => '✏ Edit My Profile',
-        'href'  => admin_url( 'post.php?post=' . $post_id . '&action=edit' ),
+        'href'  => $url,
     ] );
 }, 100 );
 

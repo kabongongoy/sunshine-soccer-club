@@ -26,12 +26,14 @@ jobs:
             wordpress-config/sunshine-player-accounts.php \
             wordpress-config/sunshine-player-social.php \
             wordpress-config/sunshine-shortcodes.php \
+            wordpress-config/sunshine-profile-edit.php \
             admin@${{ secrets.LIGHTSAIL_HOST }}:/tmp/
 
           ssh -i ~/.ssh/deploy_key admin@${{ secrets.LIGHTSAIL_HOST }} "
-            sudo cp /tmp/sunshine-player-accounts.php /var/www/html/wp-content/mu-plugins/
+            sudo cp /tmp/sunshine-player-accounts.php  /var/www/html/wp-content/mu-plugins/
             sudo cp /tmp/sunshine-player-social.php    /var/www/html/wp-content/mu-plugins/
             sudo cp /tmp/sunshine-shortcodes.php       /var/www/html/wp-content/mu-plugins/
+            sudo cp /tmp/sunshine-profile-edit.php     /var/www/html/wp-content/mu-plugins/
             sudo chown www-data:www-data /var/www/html/wp-content/mu-plugins/sunshine-*.php
           "
 
@@ -55,6 +57,16 @@ jobs:
           ssh -i ~/.ssh/deploy_key admin@${{ secrets.LIGHTSAIL_HOST }} "
             sudo cp /tmp/SSC-logo.png /var/www/html/wp-content/uploads/SSC-logo.png
             sudo chown www-data:www-data /var/www/html/wp-content/uploads/SSC-logo.png
+          "
+
+      - name: Create or update pages
+        run: |
+          scp -i ~/.ssh/deploy_key \
+            wordpress-config/upsert-pages.php \
+            admin@${{ secrets.LIGHTSAIL_HOST }}:/tmp/
+
+          ssh -i ~/.ssh/deploy_key admin@${{ secrets.LIGHTSAIL_HOST }} "
+            sudo -u www-data wp --path=/var/www/html eval-file /tmp/upsert-pages.php
           "
 
       - name: Flush WordPress cache
